@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IProduct, Product } from './product'
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { map, tap } from 'rxjs/operators'
 import { BehaviorSubject, Observable } from 'rxjs'
@@ -61,6 +61,11 @@ export class ProductService {
         "imageUrl": "http://openclipart.org/image/300px/svg_to_png/120337/xbox-controller_01.png"
     }
   ]
+
+  public httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  }
+
   private _products: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
   private products$: Observable<Product[]> = this._products.asObservable();
 
@@ -97,4 +102,19 @@ export class ProductService {
       map(products => products.find(product => product.id === id))
     )
   }
+
+  public save(product: IProduct): Observable<IProduct> {
+    if (product.id === null) { // We have to create the product (POST)
+      return this.http.post<IProduct>('http://localhost:3000/products', product, this.httpOptions).pipe(
+        tap(product => console.log(`New product: ${product.id}`)),
+        tap(() => this.fetch())
+      )
+    } else { // We have to update a product (PUT)
+      return this.http.put<IProduct>(`http://localhost:3000/products/${product.id}`, product, this.httpOptions).pipe(
+        tap(product => console.log(`Edit product: ${product.id}`)),
+        tap(() => this.fetch())
+      )
+    }
+  }
+
 }

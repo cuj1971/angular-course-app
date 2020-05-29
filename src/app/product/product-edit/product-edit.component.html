@@ -1,0 +1,47 @@
+<p>product-edit works!</p>
+<div>
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <div>id: <input id="id" type="number" formControlName="id" /></div>
+        <br><br>
+        <div>product name: <input type="text" formControlName="productName" required /></div>
+        <br>
+        <div *ngIf="productForm.get('productName').invalid && (productForm.get('productName').dirty || productForm.get('productName').touched)">
+            <div *ngIf="productForm.get('productName').errors.required">
+                The name is required
+            </div>
+            <div *ngIf="productForm.get('productName').errors.minlength as minlength">
+                The name should be at least {{ minlength.requiredLength }} (actual: {{ minlength.actualLength }})
+            </div>
+            <div *ngIf="productForm.get('productName').errors.maxlength as maxlength">
+                The name should be {{ maxlength.requiredLength }} max length (actual: {{ maxlength.actualLength }})
+            </div>
+        </div>
+        <br>
+        <div>product code: <input type="text" formControlName="productCode" /></div><br><br>
+        <div>release date: <input type="date " formControlName="releaseDate" /></div><br><br>
+        <div>description: <textarea name="" id="" cols="30" rows="10" formControlName="description"></textarea></div><br><br>
+        <div>price: <input type="number" formControlName="price" /></div>
+        <br>
+        <div *ngIf="productForm.get('price').invalid && (productForm.get('price').dirty || productForm.get('price').touched)">
+            <div *ngIf="productForm.get('price').errors">
+            The price should be more than {{productForm.get('price').errors.min.min}}
+            
+            </div>
+        </div>
+        <br>
+        <div>rating: <input type="number" formControlName="starRating" /></div><br><br>
+        <div>image url: <input type="text" formControlName="imageUrl" /></div>
+        <br>
+        <div *ngIf="productForm.get('imageUrl').invalid && (productForm.get('imageUrl').dirty || productForm.get('imageUrl').touched)">
+            <div *ngIf="productForm.get('imageUrl').errors">
+            Should only contain text {{productForm.get('imageUrl').errors.pattern.requiredPattern}}
+            <!-- Should only contain text {{pattern.requiredPattern}} -->
+            </div>
+        </div>
+        <br>
+
+        <button type="submit" [disabled]="productForm.invalid">Save the product!</button>
+
+    </form>
+</div>
+
