@@ -21,6 +21,16 @@
             "imageUrl": "http://openclipart.org/image/300px/svg_to_png/58471/garden_cart.png"
         },
         {
+            "id": 3,
+            "productName": "Another Garden Cart",
+            "productCode": "GDN-0024",
+            "releaseDate": "May 28, 2020",
+            "description": "30 gallon capacity rolling garden cart",
+            "price": 49.99,
+            "starRating": 1.2,
+            "imageUrl": "http://openclipart.org/image/300px/svg_to_png/58471/garden_cart.png"
+        },
+        {
             "id": 5,
             "productName": "Hammer",
             "productCode": "TBX-0048",

@@ -71,20 +71,29 @@ export class ProductService {
   public fetch() {
     // Create an observable from the get method of HttpClient service
     // which will return a IProduct[] object
+    // which is transformed to Product[] array
     this.http.get<IProduct[]>('http://localhost:3000/products').pipe(
-      map(products => products.map(product => new Product(product))),
-      tap(products => console.log(`Products number: ${products.length}`))
+      // combining standard js map with observable map
+      map(ps => ps.map(p => new Product(p))),
+      // tap does not change the returned object
+      tap(ps2 => console.log(`Products number: ${ps2.length}`)
+      )
     ).subscribe(
-      products => this._products.next(products)
+      // mapped observable returns Product[] array
+      // _products is a BehaviorSubject 
+      // next takes the Product[] array as new/initial input for the BS
+      prods => this._products.next(prods)
     )
   }
 
   public getProducts$(): Observable<Product[]> {
+    // products$ is an observable which takes the output of _products as its source
     return this.products$
   }
 
   public getProductById$(id: number): Observable<Product> {
     return this.products$.pipe(
+      // as with getProducts$ except here we want to filter the array based on the ID
       map(products => products.find(product => product.id === id))
     )
   }
